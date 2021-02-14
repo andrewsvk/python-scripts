@@ -45,12 +45,17 @@ def compress_all_files(filelist, ffmpeg_exe, crf=28):
         compress_file(file, ffmpeg_exe, crf)
 
 
-crf = 28  # Constant Rate Factor 0-50, default: 28
+crf = 28  # Constant Rate Factor 0-50
 exe = 'C:\\FFmpeg\\bin\\ffmpeg.exe'  # Path to ffmpeg.exe
-path = "SET_PATH"  # Path to directory which whill be processed
+path = "SET_PATH"  # Path to directory which will be processed
 
 
 if __name__ == "__main__":
+    crf = int(input("Enter constant rate factor [0-50]: "))
+    exe = input("Enter path to ffmpeg.exe: ")
+    path = input(
+        "Enter path to directory which will be processed\nincluding subdirectories: ")
+
     filelist = get_filelist(path)
     compress_all_files(filelist, exe, crf)
     print("Everything done.")
