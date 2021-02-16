@@ -1,4 +1,5 @@
 import os
+import shutil
 from ffmpy import FFmpeg
 
 
@@ -23,7 +24,7 @@ def compress_file(file, ffmpeg_exe, crf):
 
     out_name = file.replace(".mp4", "-Compressed.mp4")
 
-    # Setting FFmpeg args, see http://ffmpeg.org/ffmpeg.html for more.
+    # Setting FFmpeg args, see http: // ffmpeg.org/ffmpeg.html for more.
     in_args = {file: None}
     out_args = {
         out_name: f'-vcodec libx264 -crf {crf} -loglevel quiet -preset veryfast'}
@@ -45,17 +46,19 @@ def compress_all_files(filelist, ffmpeg_exe, crf=28):
         compress_file(file, ffmpeg_exe, crf)
 
 
-crf = 28  # Constant Rate Factor 0-50
-exe = 'C:\\FFmpeg\\bin\\ffmpeg.exe'  # Path to ffmpeg.exe
-path = "SET_PATH"  # Path to directory which will be processed
-
+# crf = 28  # Constant Rate Factor 0-50
+# path = "SET_PATH"  # Path to directory which will be processed
+ffmpeg_path = shutil.which("ffmpeg")
 
 if __name__ == "__main__":
+    if not ffmpeg_path:
+        ffmpeg_path = input(
+            "ffmpeg.exe not found.\nPlease enter path to ffmpeg.exe: ")
+
     crf = int(input("Enter constant rate factor [0-50]: "))
-    exe = input("Enter path to ffmpeg.exe: ")
     path = input(
         "Enter path to directory which will be processed\nincluding subdirectories: ")
 
     filelist = get_filelist(path)
-    compress_all_files(filelist, exe, crf)
+    compress_all_files(filelist, ffmpeg_path, crf)
     print("Everything done.")
